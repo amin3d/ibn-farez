@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: [ "main" ] # هر بار که کد جدید روی این شاخه پوش شود، بیلد انجام می‌شود
+    branches: ["main", "master"] # هر بار که کد جدید روی این شاخه پوش شود، بیلد انجام می‌شود
 
 jobs:
   build:
