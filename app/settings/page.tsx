@@ -5,17 +5,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Check, Monitor, Moon, Sparkles, Sun, Type } from "lucide-react";
-
-type SettingsState = {
-  fontSize: string;
-  theme: string;
-};
-
-const STORAGE_KEY = "ibn-alfard-settings";
-const defaultSettings: SettingsState = {
-  fontSize: "100%",
-  theme: "system",
-};
+import { getStoredSettings, saveStoredSettings, defaultSettings } from "@/lib/settings";
 
 const fontOptions = [
   { label: "کوچک", value: "90%", description: "برای خواندن سریع" },
@@ -52,7 +42,19 @@ function readStoredSettings(): SettingsState {
 }
 
 export default function SettingsPage() {
-  const [settings, setSettings] = useState<SettingsState>(readStoredSettings);
+  const [settings, setSettings] = useState(defaultSettings);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      const stored = await getStoredSettings();
+      if (!mounted) return;
+      setSettings(stored);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -62,7 +64,6 @@ export default function SettingsPage() {
     root.style.setProperty("--app-font-size", settings.fontSize);
     root.style.colorScheme = isDark ? "dark" : "light";
     root.classList.toggle("dark", isDark);
-    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
   }, [settings]);
 
   useEffect(() => {
@@ -77,8 +78,12 @@ export default function SettingsPage() {
     return () => mediaQuery.removeEventListener("change", listener);
   }, [settings.theme]);
 
-  const updateSettings = (patch: Partial<SettingsState>) => {
-    setSettings((current) => ({ ...current, ...patch }));
+  const updateSettings = (patch: Partial<typeof defaultSettings>) => {
+    setSettings((current) => {
+      const next = { ...current, ...patch };
+      void saveStoredSettings(next);
+      return next;
+    });
   };
 
   return (
