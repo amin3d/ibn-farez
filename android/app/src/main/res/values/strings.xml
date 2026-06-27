@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">ابن الفارض</string>
+    <string name="title_activity_main">ابن الفارض</string>
+    <string name="package_name">com.yourapp.ibnalfard</string>
+    <string name="custom_url_scheme">com.yourapp.ibnalfard</string>
+</resources>
