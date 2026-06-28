@@ -4,16 +4,20 @@ let db: IDBPDatabase | null = null;
 
 export const getDB = async () => {
   if (!db) {
-    db = await openDB("IbnAlfardDB", 2, {
+    db = await openDB("IbnAlfardDB", 5, {
       upgrade(db, oldVersion) {
-        // Object store برای اشعار
+        // ایجاد store اشعار
         if (!db.objectStoreNames.contains("poems")) {
           const store = db.createObjectStore("poems", { keyPath: "id" });
           store.createIndex("title", "title");
         }
-        // Object store برای نشانک‌ها (فقط id شعر)
-        if (oldVersion < 2 && !db.objectStoreNames.contains("bookmarks")) {
+        // ایجاد store نشانک‌ها
+        if (!db.objectStoreNames.contains("bookmarks")) {
           db.createObjectStore("bookmarks", { keyPath: "poemId" });
+        }
+        // ایجاد store تنظیمات (مهم)
+        if (!db.objectStoreNames.contains("settings")) {
+          db.createObjectStore("settings", { keyPath: "key" });
         }
       },
     });
@@ -21,7 +25,7 @@ export const getDB = async () => {
   return db;
 };
 
-// --- توابع مربوط به اشعار (قبلاً موجود) ---
+// --- بقیه توابع بدون تغییر ---
 export const savePoems = async (poems: any[]) => {
   const db = await getDB();
   const tx = db.transaction("poems", "readwrite");
@@ -46,7 +50,6 @@ export const searchPoems = async (query: string) => {
   });
 };
 
-// --- توابع جدید برای نشانک‌ها ---
 export const toggleBookmark = async (poemId: string) => {
   const db = await getDB();
   const tx = db.transaction("bookmarks", "readwrite");
@@ -54,10 +57,10 @@ export const toggleBookmark = async (poemId: string) => {
   const existing = await store.get(poemId);
   if (existing) {
     await store.delete(poemId);
-    return false; // removed
+    return false;
   } else {
     await store.put({ poemId });
-    return true; // added
+    return true;
   }
 };
 
@@ -75,15 +78,26 @@ export const getBookmarkedPoems = async () => {
   const allPoems = await db.getAll("poems");
   return allPoems.filter((p) => poemIds.includes(p.id));
 };
+
 export const getSetting = async <T>(key: string, defaultValue: T): Promise<T> => {
   const db = await getDB();
-  const result = await db.get("settings", key);
-  return result ? (result.value as T) : defaultValue;
+  try {
+    const result = await db.get("settings", key);
+    return result ? (result.value as T) : defaultValue;
+  } catch (error) {
+    console.error("Error getting setting:", error);
+    return defaultValue;
+  }
 };
 
 export const setSetting = async <T>(key: string, value: T): Promise<void> => {
   const db = await getDB();
-  const tx = db.transaction("settings", "readwrite");
-  await tx.store.put({ key, value });
-  await tx.done;
+  try {
+    const tx = db.transaction("settings", "readwrite");
+    await tx.store.put({ key, value });
+    await tx.done;
+  } catch (error) {
+    console.error("Error setting setting:", error);
+    throw error;
+  }
 };

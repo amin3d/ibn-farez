@@ -1,4 +1,3 @@
-// lib/settings.ts
 import { getSetting, setSetting } from "./db";
 
 export interface SettingsState {
@@ -16,15 +15,23 @@ const SETTINGS_KEY = "app-settings";
 export const getStoredSettings = async (): Promise<SettingsState> => {
   try {
     const stored = await getSetting<Partial<SettingsState>>(SETTINGS_KEY, {});
+    console.log("🔍 Stored settings from DB:", stored);
     return {
       fontSize: stored.fontSize ?? defaultSettings.fontSize,
       theme: stored.theme ?? defaultSettings.theme,
     };
-  } catch {
+  } catch (error) {
+    console.error("Error reading settings:", error);
     return defaultSettings;
   }
 };
 
 export const saveStoredSettings = async (settings: SettingsState): Promise<void> => {
-  await setSetting(SETTINGS_KEY, settings);
+  try {
+    await setSetting(SETTINGS_KEY, settings);
+    console.log("✅ Settings saved successfully:", settings);
+  } catch (error) {
+    console.error("Error saving settings:", error);
+    throw error;
+  }
 };

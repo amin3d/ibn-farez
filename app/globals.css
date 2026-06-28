@@ -49,30 +49,43 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  /* رنگ‌های جدید مطابق با تصویر */
+  --background: oklch(0.965 0.008 100);   /* #F5F3E8 (کرم) */
+  --foreground: oklch(0.22 0.025 140);    /* #1A2E1F (سبز تیره) */
+
+  --card: oklch(0.98 0.006 100);          /* #FAF8F2 */
+  --card-foreground: oklch(0.22 0.025 140);
+
+  --popover: oklch(0.98 0.006 100);
+  --popover-foreground: oklch(0.22 0.025 140);
+
+  --primary: oklch(0.35 0.08 145);        /* #2D5A3B (سبز اصلی) */
+  --primary-foreground: oklch(0.965 0.008 100);
+
+  --secondary: oklch(0.75 0.12 85);       /* #C9A84C (طلایی) */
+  --secondary-foreground: oklch(0.22 0.025 140);
+
+  --muted: oklch(0.94 0.01 90);           /* #E8E4D9 (کرم مایل) */
+  --muted-foreground: oklch(0.45 0.04 145); /* #4A6A4A */
+
+  --accent: oklch(0.94 0.01 90);
+  --accent-foreground: oklch(0.22 0.025 140);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --destructive-foreground: oklch(0.965 0.008 100);
+
+  --border: oklch(0.85 0.02 90);          /* روشن‌تر از کرم */
+  --input: oklch(0.85 0.02 90);
+  --ring: oklch(0.35 0.08 145);           /* همرنگ primary */
+
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+
   --radius: 0.625rem;
+
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -84,29 +97,40 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: oklch(0.19 0.025 140);    /* #1A2E1F (سبز تیره) */
+  --foreground: oklch(0.965 0.008 100);   /* #F5F3E8 */
+
+  --card: oklch(0.22 0.025 140);          /* کمی روشن‌تر */
+  --card-foreground: oklch(0.965 0.008 100);
+
+  --popover: oklch(0.22 0.025 140);
+  --popover-foreground: oklch(0.965 0.008 100);
+
+  --primary: oklch(0.55 0.09 145);        /* #4A7A5A (سبز روشن‌تر) */
+  --primary-foreground: oklch(0.965 0.008 100);
+
+  --secondary: oklch(0.75 0.12 85);       /* طلایی (همان) */
+  --secondary-foreground: oklch(0.19 0.025 140);
+
+  --muted: oklch(0.25 0.02 140);          /* تیره‌تر */
+  --muted-foreground: oklch(0.65 0.02 100);
+
+  --accent: oklch(0.25 0.02 140);
+  --accent-foreground: oklch(0.965 0.008 100);
+
   --destructive: oklch(0.704 0.191 22.216);
+  --destructive-foreground: oklch(0.965 0.008 100);
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: oklch(0.55 0.09 145);           /* همرنگ primary در حالت تاریک */
+
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
+
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -120,11 +144,6 @@
 @layer base {
   :root {
     --app-font-size: 100%;
-  }
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    /* ... سایر متغیرهای تاریک */
   }
   * {
     @apply border-border outline-ring/50;
