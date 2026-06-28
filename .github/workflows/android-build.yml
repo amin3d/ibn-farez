@@ -40,6 +40,11 @@ jobs:
       run: |
         echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/ibn-alfard-release.keystore
 
+    - name: Verify Keystore
+      run: |
+        file android/app/ibn-alfard-release.keystore
+        keytool -list -v -keystore android/app/ibn-alfard-release.keystore -storepass ${{ secrets.KEYSTORE_PASSWORD }} | head -n 10
+
     - name: Build Release APK
       run: |
         cd android
