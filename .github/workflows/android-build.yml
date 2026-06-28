@@ -3,12 +3,14 @@ name: Build Release APK
 on:
   push:
     tags:
-      - 'v*'  # هر بار که تگ با v شروع شود اجرا می‌شود
-  workflow_dispatch:  # امکان اجرای دستی
+      - 'v*'
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # رفع اخطار Node.js
 
     steps:
     - name: Checkout
@@ -48,11 +50,17 @@ jobs:
         KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
         KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
+    - name: Check APK exists
+      run: |
+        ls -la android/app/build/outputs/apk/release/ || echo "Directory not found"
+        find android -name "*.apk" 2>/dev/null || echo "No APK found"
+
     - name: Upload APK as Artifact
       uses: actions/upload-artifact@v4
       with:
         name: app-release-apk
         path: android/app/build/outputs/apk/release/app-release.apk
+        if-no-files-found: error
 
     - name: Upload APK to Release
       uses: softprops/action-gh-release@v1
