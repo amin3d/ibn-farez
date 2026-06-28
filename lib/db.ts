@@ -75,3 +75,15 @@ export const getBookmarkedPoems = async () => {
   const allPoems = await db.getAll("poems");
   return allPoems.filter((p) => poemIds.includes(p.id));
 };
+export const getSetting = async <T>(key: string, defaultValue: T): Promise<T> => {
+  const db = await getDB();
+  const result = await db.get("settings", key);
+  return result ? (result.value as T) : defaultValue;
+};
+
+export const setSetting = async <T>(key: string, value: T): Promise<void> => {
+  const db = await getDB();
+  const tx = db.transaction("settings", "readwrite");
+  await tx.store.put({ key, value });
+  await tx.done;
+};

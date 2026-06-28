@@ -7,25 +7,15 @@ import { Card, CardContent } from "@/components/ui/card";
 import PoemNavigation from "@/components/PoemNavigation";
 import BookmarkButton from "@/components/BookmarkButton";
 import { ArrowRight } from "lucide-react";
+import { Poem } from "@/lib/poems"; // ایمپورت نوع Poem از فایل مرکزی
 
 // تعریف تایپ‌ها برای ورودی‌های کامپوننت
-interface Verse {
-  first: string;
-  second: string;
-  translations?: { text: string }[];
-}
 
-interface Poem {
-  id: string;
-  title: string;
-  poet: string;
-  verses: Verse[];
-}
 
 interface PoemClientProps {
   poem: Poem;
-  prev: string | null;
-  next: string | null;
+  prev: Poem | null;
+  next: Poem | null;
 }
 
 export default function PoemClient({ poem, prev, next }: PoemClientProps) {

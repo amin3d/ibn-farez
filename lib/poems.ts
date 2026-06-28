@@ -1,9 +1,12 @@
 import poemsData from "@/public/data/poems.json";
-
+export interface Translation {
+  lang: string;   // مثلاً "fa"
+  text: string;   // متن ترجمه
+}
 export interface Verse {
   first: string;
   second: string;
-  translations:string[];
+  translations:Translation[];
 }
 
 export interface Poem {

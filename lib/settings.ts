@@ -1,42 +1,30 @@
-import { openDB } from "idb";
+// lib/settings.ts
+import { getSetting, setSetting } from "./db";
 
-const DB_NAME = "ibn-alfard-db";
-const STORE = "settings";
-const KEY = "prefs";
-
-type SettingsState = {
+export interface SettingsState {
   fontSize: string;
-  theme: string;
-};
+  theme: "light" | "dark" | "system";
+}
 
-const defaultSettings: SettingsState = {
+export const defaultSettings: SettingsState = {
   fontSize: "100%",
   theme: "system",
 };
 
-async function getDB() {
-  return openDB(DB_NAME, 1, {
-    upgrade(db) {
-      if (!db.objectStoreNames.contains(STORE)) {
-        db.createObjectStore(STORE);
-      }
-    },
-  });
-}
+const SETTINGS_KEY = "app-settings";
 
-export async function getStoredSettings(): Promise<SettingsState> {
+export const getStoredSettings = async (): Promise<SettingsState> => {
   try {
-    const db = await getDB();
-    const res = await db.get(STORE, KEY);
-    return (res as SettingsState) ?? defaultSettings;
-  } catch (e) {
+    const stored = await getSetting<Partial<SettingsState>>(SETTINGS_KEY, {});
+    return {
+      fontSize: stored.fontSize ?? defaultSettings.fontSize,
+      theme: stored.theme ?? defaultSettings.theme,
+    };
+  } catch {
     return defaultSettings;
   }
-}
+};
 
-export async function saveStoredSettings(settings: SettingsState) {
-  const db = await getDB();
-  await db.put(STORE, settings, KEY);
-}
-
-export { defaultSettings };
+export const saveStoredSettings = async (settings: SettingsState): Promise<void> => {
+  await setSetting(SETTINGS_KEY, settings);
+};
