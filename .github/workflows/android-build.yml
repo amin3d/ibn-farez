@@ -1,21 +1,23 @@
-name: Build Android APK
+name: Build Release APK
 
 on:
   push:
-    branches: ["main", "master"]
+    tags:
+      - 'v*'  # هر بار که تگ با v شروع شود اجرا می‌شود
+  workflow_dispatch:  # امکان اجرای دستی
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout Repository
+    - name: Checkout
       uses: actions/checkout@v4
 
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '22'  # ← تغییر از 20 به 22
+        node-version: '22'
 
     - name: Setup Java
       uses: actions/setup-java@v4
@@ -32,14 +34,22 @@ jobs:
     - name: Sync Capacitor
       run: npx cap sync android
 
-    - name: Build Android APK
+    - name: Decode Keystore
+      run: |
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/ibn-alfard-release.keystore
+
+    - name: Build Release APK
       run: |
         cd android
         chmod +x gradlew
-        ./gradlew assembleDebug
+        ./gradlew assembleRelease
+      env:
+        STORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
-        name: app-debug-apk
-        path: android/app/build/outputs/apk/debug/app-debug.apk
+        name: app-release-apk
+        path: android/app/build/outputs/apk/release/app-release.apk
