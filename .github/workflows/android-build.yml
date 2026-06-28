@@ -2,7 +2,7 @@ name: Build Android APK
 
 on:
   push:
-    branches: ["main", "master"] # هر بار که کد جدید روی این شاخه پوش شود، بیلد انجام می‌شود
+    branches: ["main", "master"]
 
 jobs:
   build:
@@ -15,13 +15,13 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20' # نسخه نود جی‌اس خود را تنظیم کنید
+        node-version: '22'  # ← تغییر از 20 به 22
 
     - name: Setup Java
       uses: actions/setup-java@v4
       with:
         distribution: 'zulu'
-        java-version: '17' # کپسیتور معمولا به جاوا ۱۷ نیاز دارد
+        java-version: '17'
 
     - name: Install Dependencies
       run: npm install
