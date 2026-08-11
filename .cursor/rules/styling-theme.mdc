@@ -1,0 +1,35 @@
+---
+description: تم رنگی، Tailwind v4 و RTL
+globs: "**/*.{tsx,css}"
+alwaysApply: false
+---
+
+# Styling & Theme
+
+## Tailwind v4
+
+- Config در `app/globals.css` با `@theme inline` و `@import "tailwindcss"`
+- shadcn: `@import "shadcn/tailwind.css"`
+- Dark mode: `@custom-variant dark (&:is(.dark *))`
+
+## پالت (معنوی — تغییر نده مگر درخواست)
+
+| Token | نقش |
+|-------|-----|
+| `primary` | سبز (#2D5A3B) |
+| `secondary` | طلایی (#C9A84C) — accent/active |
+| `background` | کرم (#F5F3E8) |
+| `foreground` | سبز تیره متن |
+| `muted-foreground` | متن ثانویه |
+
+رنگ‌ها با `oklch()` در `:root` و `.dark`.
+
+## RTL
+
+- Root: `dir="rtl"` — padding/icon placement با `right`/`left` منطقی RTL
+- جستجو: آیکون Search در `right-3`، دکمه clear در `left-3`
+- از hardcode `ml-*`/`mr-*` برای layout اصلی پرهیز؛ `gap`, `px`, logical properties ترجیح
+
+## انیمیشن
+
+`tw-animate-css` import شده — transition‌های موجود: `transition-all duration-200`

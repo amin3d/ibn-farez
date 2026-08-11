@@ -1,0 +1,35 @@
+---
+description: Capacitor و build اندروید
+globs: "{android/**,capacitor.config.ts,.github/workflows/**}"
+alwaysApply: false
+---
+
+# Capacitor & Android
+
+## Config (`capacitor.config.ts`)
+
+- `appId`: `com.yourapp.ibnalfard`
+- `webDir`: `out` (خروجی `next build`)
+- Splash: `#F5F3E8`, immersive, no spinner
+
+## Workflow
+
+```bash
+npm run build
+npx cap sync android
+npx cap open android   # Android Studio
+# یا: cd android && ./gradlew assembleDebug
+```
+
+## نکات
+
+- همیشه **قبل از sync** build بگیر — `out/` باید به‌روز باشد
+- تغییرات دستی در `android/` ممکن است با `cap sync` overwrite شود
+- GitHub Actions: `.github/workflows/android-build.yml` — release با tag `v*`
+- Keystore secrets در GitHub Actions — هرگز commit نکن
+
+## محدودیت‌های موبایل
+
+- Offline-first: داده در bundle (`poems.json`) + IndexedDB
+- بدون وابستگی به network در runtime critical paths
+- `MainActivity.java` در `com.yourapp.ibnalfard`

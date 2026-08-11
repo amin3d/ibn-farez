@@ -1,0 +1,41 @@
+---
+description: lib، دادهٔ اشعار و IndexedDB
+globs: lib/**/*
+alwaysApply: false
+---
+
+# Data & Storage
+
+## poems.ts
+
+```typescript
+export interface Poem { id: string; title: string; poet: string; verses: Verse[] }
+export const poems: Poem[] = poemsData; // from public/data/poems.json
+export const getPoem = (id: string) => poems.find(p => p.id === id);
+export const getAdjacentPoems = (id: string) => ({ prev, next });
+```
+
+- ID format: `"poem_1519.html"` (از aldiwan)
+- Verse: `first`, `second`, `translations[{ lang, text }]`
+
+## IndexedDB (`lib/db.ts`)
+
+- DB name: `IbnAlfardDB`, version: **5**
+- Stores: `poems`, `bookmarks` (key: poemId), `settings` (key: key)
+- API: `getDB`, `savePoems`, `searchPoems`, `toggleBookmark`, `isBookmarked`, `getBookmarkedPoems`, `getSetting`, `setSetting`
+
+### تغییر schema
+
+Version را bump کن + migration در `upgrade()`. Breaking change بدون migration ممنوع.
+
+## settings.ts
+
+```typescript
+interface SettingsState { fontSize: string; theme: "light" | "dark" | "system" }
+```
+
+Key در DB: `"app-settings"`. از `getStoredSettings` / `saveStoredSettings` استفاده کن.
+
+## poems.json
+
+فرمت JSON بالا را رعایت کن. فایل در `public/data/` — rebuild لازم بعد از تغییر.

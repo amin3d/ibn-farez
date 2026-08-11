@@ -1,0 +1,37 @@
+---
+description: الگوهای Next.js App Router با static export
+globs: app/**/*
+alwaysApply: false
+---
+
+# Next.js Static Export
+
+## محدودیت‌ها
+
+- ❌ Route Handlers (`app/api/`), `cookies()`, `headers()`, dynamic server features
+- ❌ `next/image` با optimization — از `<img>` یا `unoptimized: true` استفاده شده
+- ✅ `generateStaticParams` برای مسیرهای dynamic مثل `poems/[id]`
+
+## الگوی صفحهٔ dynamic
+
+```tsx
+export async function generateStaticParams() {
+  return poems.map(p => ({ id: p.id.toString() }));
+}
+
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  // ...
+}
+```
+
+## Client vs Server
+
+| نیاز | محل |
+|------|-----|
+| useState, useEffect, IndexedDB | `"use client"` component جدا (مثل `PoemClient.tsx`) |
+| خواندن poems.json، metadata | Server Component در `page.tsx` |
+
+## Layout
+
+Root layout: `lang="fa" dir="rtl"`, SplashScreen + BottomNav + `main` با `pb-20 max-w-2xl`.

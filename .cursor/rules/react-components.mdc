@@ -1,0 +1,37 @@
+---
+description: الگوهای React و shadcn/ui
+globs: components/**/*
+alwaysApply: false
+---
+
+# React Components
+
+## ساختار
+
+- Functional components + hooks
+- `"use client"` فقط وقتی state/event/browser API لازم است
+- UI پایه از `@/components/ui/*` (shadcn) — کامپوننت جدید shadcn با CLI اضافه شود
+- `cn()` از `@/lib/utils` برای merge کلاس‌ها
+
+## آیکون‌ها
+
+- **lucide-react** در کامپوننت‌های اپ (BottomNav, PoemClient, ...)
+- hugeicons فقط در config shadcn — mix نکن مگر دلیل مشخص
+
+## الگوی UI موجود
+
+```tsx
+// کارت شعر — border-r-4 border-r-secondary، hover:scale-[1.01]
+<Card className="hover:shadow-lg transition-all border-r-4 border-r-secondary">
+  <CardTitle className="text-lg flex items-center gap-2">...</CardTitle>
+</Card>
+```
+
+## BottomNav
+
+Fixed bottom، glass effect (`backdrop-blur-xl`)، active state با `text-secondary`.
+
+## Accessibility
+
+- `aria-label` برای دکمه‌های icon-only (مثل پاک‌کردن جستجو)
+- متن placeholder و label به فارسی

@@ -11,6 +11,7 @@ import {
   defaultSettings,
   SettingsState,
 } from "@/lib/settings";
+import { APP_NAME, APP_VERSION } from "@/lib/version";
 
 // گزینه‌های اندازه فونت (نوع‌دهی صریح)
 const fontOptions = [
@@ -229,6 +230,26 @@ export default function SettingsPage() {
               حالت فعلی: {currentThemeLabel}
             </span>
           </div>
+        </CardContent>
+      </Card>
+
+      {/* درباره و نسخه */}
+      <Card className="border-border/70 shadow-sm">
+        <CardHeader>
+          <CardTitle className="text-lg">درباره برنامه</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm text-muted-foreground">
+          <p>
+            <span className="font-medium text-foreground">{APP_NAME}</span>
+            {" — "}
+            مطالعهٔ آفلاین اشعار عرفانی ابن‌الفارض
+          </p>
+          <p>
+            نسخه{" "}
+            <span className="font-medium text-foreground" dir="ltr">
+              {APP_VERSION}
+            </span>
+          </p>
         </CardContent>
       </Card>
 
