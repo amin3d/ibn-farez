@@ -1,0 +1,30 @@
+---
+description: به‌روزرسانی changelog هنگام افزودن قابلیت کاربرپسند
+globs: public/data/changelog.json, lib/version.ts, package.json
+alwaysApply: false
+---
+
+# Changelog
+
+وقتی قابلیت **قابل مشاهده برای کاربر** اضافه یا تغییر می‌کنی:
+
+1. **`lib/version.ts`** — `APP_VERSION` را افزایش بده (semver)
+2. **`package.json`** — فیلد `version` را هم‌تراز کن
+3. **`public/data/changelog.json`** — یک entry جدید اضافه کن:
+
+```json
+{
+  "version": "1.0.2",
+  "date": "YYYY-MM-DD",
+  "title": "عنوان کوتاه فارسی",
+  "features": [
+    "توضیح یک خطی ویژگی اول",
+    "توضیح یک خطی ویژگی دوم"
+  ]
+}
+```
+
+- `entries` را به **ابتدای آرایه** اضافه کن (جدیدترین بالا)
+- متن‌ها **فارسی** و مختصر
+- باگ‌فیکس‌های داخلی بدون UI لازم نیست در changelog بیاید
+- `ChangelogModal` هنگام ورود، entryهای بین `lastSeenVersion` و `APP_VERSION` را نشان می‌دهد
