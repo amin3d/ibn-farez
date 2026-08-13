@@ -2,19 +2,20 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { poems } from "@/lib/poems";
+import { poems, getPoemTitle, getPoemSubtitle } from "@/lib/poems";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen, Search, X } from "lucide-react";
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // فیلتر کردن اشعار بر اساس عنوان یا نام شاعر
+  // فیلتر کردن اشعار بر اساس عنوان، نام مستعار یا نام شاعر
   const filteredPoems = useMemo(() => {
     if (!searchQuery.trim()) return poems;
     const query = searchQuery.trim().toLowerCase();
     return poems.filter(
       (poem) =>
+        getPoemTitle(poem).toLowerCase().includes(query) ||
         poem.title.toLowerCase().includes(query) ||
         poem.poet.toLowerCase().includes(query)
     );
@@ -36,7 +37,7 @@ export default function HomePage() {
           <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
           <input
             type="text"
-            placeholder="جستجو در اشعار..."
+            placeholder="جستجو با عنوان یا نام شعر..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pr-9 pl-8 py-2 text-sm rounded-full border border-border bg-background/80 focus:outline-none focus:ring-2 focus:ring-secondary/50 focus:border-secondary transition-all"
@@ -67,8 +68,13 @@ export default function HomePage() {
                 <CardHeader className="pb-2">
                   <CardTitle className="text-lg flex items-center gap-2">
                     <BookOpen className="w-5 h-5 text-secondary shrink-0" />
-                    <span className="truncate">{poem.title}</span>
+                    <span className="truncate">{getPoemTitle(poem)}</span>
                   </CardTitle>
+                  {getPoemSubtitle(poem) && (
+                    <p className="text-sm text-muted-foreground truncate pr-7">
+                      {getPoemSubtitle(poem)}
+                    </p>
+                  )}
                 </CardHeader>
                 <CardContent className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">{poem.poet}</p>

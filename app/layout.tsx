@@ -3,6 +3,7 @@ import "./globals.css";
 import { vazir } from "./fonts"; // ایمپورت فونت
 import BottomNav from "@/components/BottomNav";
 import SplashScreen from "@/components/SplashScreen";
+import ChangelogModal from "@/components/ChangelogModal";
 
 export const metadata: Metadata = {
   title: "دیوان ابن الفارض",
@@ -20,6 +21,7 @@ export default function RootLayout({
     <html lang="fa" dir="rtl" className={vazir.className}>
       <body>
         <SplashScreen />
+        <ChangelogModal />
         <main className="pb-20 pt-4 max-w-2xl mx-auto px-4">
           {children}
         </main>

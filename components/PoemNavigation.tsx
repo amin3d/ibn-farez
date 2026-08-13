@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Poem } from "@/lib/poems";
+import { Poem, getPoemTitle } from "@/lib/poems";
 
 interface Props {
   prev: Poem | null;
@@ -16,7 +16,7 @@ export default function PoemNavigation({ prev, next }: Props) {
           variant="outline"
           className="border-secondary text-secondary hover:bg-secondary/10 hover:border-secondary-dark transition-colors"
         >
-          <Link href={`/poems/${prev.id}`}>→ {prev.title}</Link>
+          <Link href={`/poems/${prev.id}`}>→ {getPoemTitle(prev)}</Link>
         </Button>
       ) : (
         <div />
@@ -27,7 +27,7 @@ export default function PoemNavigation({ prev, next }: Props) {
           variant="outline"
           className="border-secondary text-secondary hover:bg-secondary/10 hover:border-secondary-dark transition-colors"
         >
-          <Link href={`/poems/${next.id}`}>{next.title} ←</Link>
+          <Link href={`/poems/${next.id}`}>{getPoemTitle(next)} ←</Link>
         </Button>
       ) : (
         <div />

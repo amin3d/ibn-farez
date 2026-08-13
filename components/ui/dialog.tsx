@@ -52,9 +52,12 @@ function DialogContent({
   className,
   children,
   showCloseButton = true,
+  closeButtonSide = "left",
   ...props
 }: React.ComponentProps<typeof DialogPrimitive.Content> & {
   showCloseButton?: boolean
+  /** در RTL دکمهٔ بستن معمولاً سمت چپ (start) قرار می‌گیرد */
+  closeButtonSide?: "left" | "right"
 }) {
   return (
     <DialogPortal>
@@ -72,11 +75,14 @@ function DialogContent({
           <DialogPrimitive.Close data-slot="dialog-close" asChild>
             <Button
               variant="ghost"
-              className="absolute top-4 right-4"
+              className={cn(
+                "absolute top-4",
+                closeButtonSide === "left" ? "left-4" : "right-4"
+              )}
               size="icon-sm"
             >
               <HugeiconsIcon icon={Cancel01Icon} strokeWidth={2} />
-              <span className="sr-only">Close</span>
+              <span className="sr-only">بستن</span>
             </Button>
           </DialogPrimitive.Close>
         )}

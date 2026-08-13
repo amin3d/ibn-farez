@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Search, Bookmark, Settings } from "lucide-react";
+import { Home, Search, Bookmark, Settings, Brain } from "lucide-react";
 
 export default function BottomNav() {
   const pathname = usePathname();
@@ -10,6 +10,7 @@ export default function BottomNav() {
   const links = [
     { href: "/", label: "خانه", icon: Home },
     { href: "/search", label: "جستجو", icon: Search },
+    { href: "/memorization", label: "حفظ", icon: Brain },
     { href: "/bookmarks", label: "نشانک‌ها", icon: Bookmark },
     { href: "/settings", label: "تنظیمات", icon: Settings },
   ];
@@ -21,7 +22,10 @@ export default function BottomNav() {
         dark:bg-background/60 dark:border-white/5"
     >
       {links.map(({ href, label, icon: Icon }) => {
-        const isActive = pathname === href;
+        const isActive =
+          href === "/"
+            ? pathname === "/"
+            : pathname === href || pathname.startsWith(`${href}/`);
         return (
           <Link
             key={href}

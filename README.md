@@ -2,7 +2,7 @@
 
 <div dir="rtl">
 
-**دیوان ابن الفارض** یک اپلیکیشن موبایل و وب برای مطالعهٔ اشعار عرفانی ابن‌الفارض، شاعر بزرگ صوفی عرب است. این پروژه با استفاده از **Next.js 15**، **Capacitor**، **Tailwind CSS v4** و **IndexedDB** ساخته شده و تجربه‌ای روان، آفلاین و زیبا را برای علاقه‌مندان به ادبیات عرفانی فراهم می‌کند.
+**دیوان ابن الفارض** یک اپلیکیشن موبایل و وب برای مطالعهٔ اشعار عرفانی ابن‌الفارض، شاعر بزرگ صوفی عرب است. این پروژه با استفاده از **Next.js 16**، **Capacitor 8**، **Tailwind CSS v4** و **IndexedDB** ساخته شده و تجربه‌ای روان، آفلاین و زیبا را برای علاقه‌مندان به ادبیات عرفانی فراهم می‌کند.
 
 </div>
 
@@ -13,7 +13,9 @@
 - 📜 **نمایش اشعار** با تفکیک دو مصراع و قابلیت نمایش ترجمهٔ فارسی
 - 🔍 **جستجوی سریع و زنده** در عناوین، مصراع‌ها و ترجمه‌ها
 - 🔖 **نشانک‌گذاری اشعار** با ذخیره‌سازی در IndexedDB
-- 🌓 **حالت روشن/تاریک/سیستم** با تنظیمات قابل ذخیره
+- 🧠 **حفظ اشعار** — لیست تمرین، نمایش بیت‌به‌بیت با blur، راهنمای زمان‌دار و ادامه از آخرین موقعیت
+- 🌓 **حالت روشن/تاریک/سیستم** با تنظیمات قابل ذخیره (شامل زمان‌بندی حفظ)
+- 📋 **modal تغییرات** هنگام به‌روزرسانی نسخهٔ اپ
 - 📱 **منوی پایین شیشه‌ای** با ناوبری روان بین صفحات
 - 🖼️ **Splash Screen** تمام‌صفحه با لوگو و نوار بارگذاری
 - 📲 **خروجی اندروید** (APK و App Bundle) با Capacitor
@@ -24,11 +26,11 @@
 
 ## 🛠️ تکنولوژی‌های استفاده‌شده
 
-- **Next.js 15** (App Router, `output: export`)
-- **React 18** (با Hooks و کامپوننت‌های سمت کلاینت)
+- **Next.js 16** (App Router, `output: export`)
+- **React 19** (با Hooks و کامپوننت‌های سمت کلاینت)
 - **Tailwind CSS v4** (با `@theme` و `oklch`)
 - **shadcn/ui** (کامپوننت‌های کارت، دکمه و ...)
-- **Capacitor 6** (برای خروجی اندروید)
+- **Capacitor 8** (برای خروجی اندروید)
 - **IndexedDB** (با کتابخانه `idb`)
 - **TypeScript** (برای تایپ‌سیفتی)
 - **Lucide React** (آیکون‌ها)
@@ -52,21 +54,32 @@ ibn-alfard-app/
 │   │   └── page.tsx
 │   ├── bookmarks/
 │   │   └── page.tsx
+│   ├── memorization/
+│   │   ├── page.tsx
+│   │   └── [id]/
+│   │       ├── page.tsx
+│   │       └── MemorizationSessionClient.tsx
 │   └── settings/
 │       └── page.tsx
 ├── components/
 │   ├── BottomNav.tsx
 │   ├── SplashScreen.tsx
+│   ├── ChangelogModal.tsx
 │   ├── BookmarkButton.tsx
+│   ├── MemorizeButton.tsx
+│   ├── MemorizationSession.tsx
 │   ├── PoemNavigation.tsx
 │   └── ui/ (shadcn)
 ├── lib/
 │   ├── db.ts (IndexedDB)
 │   ├── poems.ts (داده‌ها و توابع)
-│   └── settings.ts (مدیریت تنظیمات)
+│   ├── settings.ts (مدیریت تنظیمات)
+│   ├── memorization.ts (منطق حفظ)
+│   └── changelog.ts (خواندن changelog.json)
 ├── public/
 │   ├── data/
-│   │   └── poems.json (داده‌های اشعار)
+│   │   ├── poems.json (داده‌های اشعار)
+│   │   └── changelog.json (تغییرات نسخه)
 │   ├── logo.png
 │   └── splash-bg.jpg
 ├── assets/ (فایل‌های منبع برای اندروید)
@@ -85,7 +98,7 @@ ibn-alfard-app/
 
 ### ۱. پیش‌نیازها
 
-- **Node.js** نسخه ۲۲ یا بالاتر (برای Capacitor 6)
+- **Node.js** نسخه ۲۲ یا بالاتر (برای Capacitor 8)
 - **npm** یا **yarn** یا **pnpm**
 - **Java JDK** نسخه ۱۷ یا ۲۱ (برای اندروید)
 - **Android SDK** (برای ساخت اندروید)
@@ -242,14 +255,14 @@ base64 -w 0 ibn-alfard-release.keystore > keystore.b64
 
 این مخزن دارای workflow برای ساخت خودکار APK در هر بار push تگ با فرمت `v*` است:
 
-- `.github/workflows/build-release.yml`
-- پس از اجرا، APK در بخش **Actions** → **Artifacts** قابل دانلود است.
+- `.github/workflows/android-build.yml`
+- پس از اجرا، APK در بخش **Actions** → **Artifacts** و **Releases** قابل دانلود است.
 
-برای اجرا:
+برای اجرا (نسخهٔ فعلی: **1.0.2**):
 
 ```bash
-git tag v1.0.0
-git push origin v1.0.0
+git tag v1.0.2
+git push origin v1.0.2
 ```
 
 ---

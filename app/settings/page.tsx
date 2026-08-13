@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Check, Monitor, Moon, Sparkles, Sun, Type } from "lucide-react";
+import { Check, Monitor, Moon, Sparkles, Sun, Type, Brain, Timer } from "lucide-react";
 import {
   getStoredSettings,
   saveStoredSettings,
   defaultSettings,
   SettingsState,
+  MEMORIZATION_HINT_OPTIONS,
+  MEMORIZATION_REVEAL_OPTIONS,
 } from "@/lib/settings";
 import { APP_NAME, APP_VERSION } from "@/lib/version";
 
@@ -206,6 +208,132 @@ export default function SettingsPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* حفظ */}
+      <Card className="border-border/70 shadow-sm">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg">
+            <Brain className="h-4 w-4 text-primary" />
+            تنظیمات حفظ
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          <p className="text-sm text-muted-foreground">
+            زمان‌بندی نمایش راهنما و بیت را در حالت تمرین حفظ تنظیم کنید.
+          </p>
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium flex items-center gap-2">
+              <Timer className="h-4 w-4 text-secondary" />
+              زمان نمایش بیت (ثانیه)
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {MEMORIZATION_REVEAL_OPTIONS.map((seconds) => (
+                <button
+                  key={seconds}
+                  type="button"
+                  onClick={() => {
+                    const patch: Partial<SettingsState> = {
+                      memorizationRevealDelay: seconds,
+                    };
+                    if (settings.memorizationHintDelay >= seconds) {
+                      patch.memorizationHintDelay = Math.max(5, seconds - 5);
+                    }
+                    updateSettings(patch);
+                  }}
+                  aria-pressed={settings.memorizationRevealDelay === seconds}
+                  className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                    settings.memorizationRevealDelay === seconds
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border hover:border-primary/40"
+                  }`}
+                >
+                  {seconds}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <p className="text-sm font-medium">زمان نمایش راهنما (ثانیه)</p>
+            <div className="flex flex-wrap gap-2">
+              {MEMORIZATION_HINT_OPTIONS.filter(
+                (s) => s < settings.memorizationRevealDelay
+              ).map((seconds) => (
+                <button
+                  key={seconds}
+                  type="button"
+                  onClick={() =>
+                    updateSettings({ memorizationHintDelay: seconds })
+                  }
+                  aria-pressed={settings.memorizationHintDelay === seconds}
+                  className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                    settings.memorizationHintDelay === seconds
+                      ? "border-secondary bg-secondary/20 text-foreground"
+                      : "border-border hover:border-secondary/40"
+                  }`}
+                >
+                  {seconds}
+                </button>
+              ))}
+            </div>
+            <p className="text-xs text-muted-foreground">
+              راهنما بخشی از مصرع اول را پیش از نمایش کامل بیت نشان می‌دهد.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <button
+              type="button"
+              onClick={() =>
+                updateSettings({
+                  memorizationAutoAdvance: !settings.memorizationAutoAdvance,
+                })
+              }
+              aria-pressed={settings.memorizationAutoAdvance}
+              className={`w-full rounded-2xl border px-4 py-3 text-right text-sm transition-all ${
+                settings.memorizationAutoAdvance
+                  ? "border-primary bg-primary/10"
+                  : "border-border"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <span>رفتن خودکار به بیت بعد</span>
+                {settings.memorizationAutoAdvance && (
+                  <Check className="h-4 w-4 text-primary" />
+                )}
+              </div>
+              <p className="mt-1 text-xs text-muted-foreground">
+                پس از نمایش بیت، پس از چند ثانیه به بیت بعدی برو
+              </p>
+            </button>
+
+            {settings.memorizationAutoAdvance && (
+              <div className="flex flex-wrap gap-2 pt-1">
+                {[2, 4, 6, 8].map((seconds) => (
+                  <button
+                    key={seconds}
+                    type="button"
+                    onClick={() =>
+                      updateSettings({ memorizationAutoAdvanceDelay: seconds })
+                    }
+                    aria-pressed={
+                      settings.memorizationAutoAdvanceDelay === seconds
+                    }
+                    className={`rounded-xl border px-3 py-2 text-sm transition-all ${
+                      settings.memorizationAutoAdvanceDelay === seconds
+                        ? "border-primary bg-primary text-primary-foreground"
+                        : "border-border hover:border-primary/40"
+                    }`}
+                  >
+                    {seconds} ث
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* پیش‌نمایش */}
       <Card className="border-border/70 shadow-sm">

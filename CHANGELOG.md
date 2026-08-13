@@ -10,6 +10,14 @@
 ### برنامه‌ریزی‌شده
 - —
 
+## [1.0.2] - 2026-08-13
+
+### افزوده شده
+- لیست حفظ اشعار و افزودن شعر از صفحهٔ هر بیت
+- تمرین بیت‌به‌بیت با blur، راهنمای زمان‌دار و نمایش تدریجی
+- تنظیم زمان راهنما، نمایش بیت و رفتن خودکار به بیت بعد
+- تب «حفظ» در ناوبری پایین و ادامه از آخرین موقعیت
+
 ## [1.0.1] - 2025-08-11
 
 ### افزوده شده
@@ -33,6 +41,7 @@
 - نمایش اشعار با دو مصراع و ترجمهٔ فارسی
 - استاتیک‌اکسپورت Next.js برای وب و Capacitor
 
-[Unreleased]: https://github.com/amin3d/ibn-farez/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/amin3d/ibn-farez/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.2
 [1.0.1]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.1
 [1.0.0]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.0

@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getBookmarkedPoems, savePoems } from "@/lib/db";
-import { poems } from "@/lib/poems";
+import { poems, getPoemTitle, getPoemSubtitle, Poem } from "@/lib/poems";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Bookmark } from "lucide-react";
 
 export default function BookmarksPage() {
-  const [bookmarkedPoems, setBookmarkedPoems] = useState<any[]>([]);
+  const [bookmarkedPoems, setBookmarkedPoems] = useState<Poem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -45,7 +45,12 @@ export default function BookmarksPage() {
             <Link key={poem.id} href={`/poems/${poem.id}`}>
               <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer border-r-4 border-r-secondary hover:border-r-secondary-dark hover:scale-[1.01]">
                 <CardHeader className="pb-2">
-                  <CardTitle className="text-foreground">{poem.title}</CardTitle>
+                  <CardTitle className="text-foreground">{getPoemTitle(poem)}</CardTitle>
+                  {getPoemSubtitle(poem) && (
+                    <p className="text-sm text-muted-foreground truncate mt-1">
+                      {getPoemSubtitle(poem)}
+                    </p>
+                  )}
                 </CardHeader>
                 <CardContent className="flex items-center justify-between">
                   <p className="text-sm text-muted-foreground">{poem.poet}</p>
