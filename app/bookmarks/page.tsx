@@ -40,9 +40,9 @@ export default function BookmarksPage() {
           <p className="text-sm mt-1">با کلیک روی آیکن نشانک در صفحهٔ هر شعر، آن را ذخیره کنید.</p>
         </div>
       ) : (
-        <div className="space-y-3">
+        <div className="flex flex-col gap-3">
           {bookmarkedPoems.map((poem) => (
-            <Link key={poem.id} href={`/poems/${poem.id}`}>
+            <Link key={poem.id} href={`/poems/${poem.id}`} className="block">
               <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer border-r-4 border-r-secondary hover:border-r-secondary-dark hover:scale-[1.01]">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-foreground">{getPoemTitle(poem)}</CardTitle>

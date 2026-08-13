@@ -101,7 +101,9 @@ export default function MemorizationPage() {
                   <Button asChild className="w-full gap-2">
                     <Link href={`/memorization/${poem.id}`}>
                       <Play className="w-4 h-4" />
-                      {entry.lastVerseIndex ? "ادامهٔ حفظ" : "شروع حفظ"}
+                      {entry.lastVerseIndex !== undefined
+                        ? "ادامهٔ حفظ"
+                        : "شروع حفظ"}
                     </Link>
                   </Button>
                 </CardContent>

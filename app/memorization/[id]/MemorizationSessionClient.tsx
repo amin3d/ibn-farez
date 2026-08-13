@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Brain } from "lucide-react";
 import MemorizationSession from "@/components/MemorizationSession";
 import { Button } from "@/components/ui/button";
-import { isInMemorizationList, getMemorizationEntries } from "@/lib/db";
+import { getMemorizationEntry, isInMemorizationList } from "@/lib/db";
 import { Poem } from "@/lib/poems";
 
 interface MemorizationSessionClientProps {
@@ -15,24 +15,36 @@ interface MemorizationSessionClientProps {
 export default function MemorizationSessionClient({
   poem,
 }: MemorizationSessionClientProps) {
-  const [allowed, setAllowed] = useState<boolean | null>(null);
+  const [status, setStatus] = useState<"loading" | "denied" | "ready">("loading");
   const [initialVerse, setInitialVerse] = useState(0);
 
   useEffect(() => {
+    let cancelled = false;
+
     void (async () => {
       const inList = await isInMemorizationList(poem.id);
-      setAllowed(inList);
-      if (inList) {
-        const entries = await getMemorizationEntries();
-        const entry = entries.find((e) => e.poemId === poem.id);
-        if (entry?.lastVerseIndex !== undefined) {
-          setInitialVerse(entry.lastVerseIndex);
-        }
+      if (cancelled) return;
+
+      if (!inList) {
+        setStatus("denied");
+        return;
       }
+
+      const entry = await getMemorizationEntry(poem.id);
+      if (cancelled) return;
+
+      if (entry?.lastVerseIndex !== undefined) {
+        setInitialVerse(entry.lastVerseIndex);
+      }
+      setStatus("ready");
     })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [poem.id]);
 
-  if (allowed === null) {
+  if (status === "loading") {
     return (
       <div className="text-center p-8 text-muted-foreground">
         در حال بارگذاری...
@@ -40,7 +52,7 @@ export default function MemorizationSessionClient({
     );
   }
 
-  if (!allowed) {
+  if (status === "denied") {
     return (
       <div className="text-center py-16 space-y-4">
         <Brain className="w-12 h-12 mx-auto text-muted-foreground/40" />
@@ -57,5 +69,11 @@ export default function MemorizationSessionClient({
     );
   }
 
-  return <MemorizationSession poem={poem} initialVerseIndex={initialVerse} />;
+  return (
+    <MemorizationSession
+      key={`${poem.id}-${initialVerse}`}
+      poem={poem}
+      initialVerseIndex={initialVerse}
+    />
+  );
 }

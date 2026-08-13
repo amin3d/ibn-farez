@@ -10,6 +10,12 @@
 ### برنامه‌ریزی‌شده
 - —
 
+## [1.0.3] - 2026-08-13
+
+### رفع شده
+- ادامهٔ حفظ از آخرین بیت مرورشده
+- فاصلهٔ بین نتایج جستجو و نشانک‌ها
+
 ## [1.0.2] - 2026-08-13
 
 ### افزوده شده
@@ -41,7 +47,8 @@
 - نمایش اشعار با دو مصراع و ترجمهٔ فارسی
 - استاتیک‌اکسپورت Next.js برای وب و Capacitor
 
-[Unreleased]: https://github.com/amin3d/ibn-farez/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/amin3d/ibn-farez/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.3
 [1.0.2]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.2
 [1.0.1]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.1
 [1.0.0]: https://github.com/amin3d/ibn-farez/releases/tag/v1.0.0

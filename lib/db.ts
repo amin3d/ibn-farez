@@ -195,6 +195,13 @@ export const getMemorizationEntries = async (): Promise<MemorizationEntry[]> => 
   return entries.sort((a, b) => b.addedAt - a.addedAt);
 };
 
+export const getMemorizationEntry = async (
+  poemId: string
+): Promise<MemorizationEntry | undefined> => {
+  const db = await getDB();
+  return db.get("memorization", poemId);
+};
+
 export const getMemorizationPoems = async () => {
   const entries = await getMemorizationEntries();
   if (entries.length === 0) return [];

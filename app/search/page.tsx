@@ -111,7 +111,7 @@ export default function SearchPage() {
       </div>
 
       {/* نتایج جستجو — بیت‌ها */}
-      <div className="space-y-3">
+      <div className="flex flex-col gap-3">
         {results.map((result) => {
           const key =
             result.verseIndex === null
@@ -119,7 +119,7 @@ export default function SearchPage() {
               : `${result.poemId}-${result.verseIndex}`;
 
           return (
-            <Link key={key} href={poemHref(result)}>
+            <Link key={key} href={poemHref(result)} className="block">
               <Card className="hover:shadow-lg transition-all duration-200 cursor-pointer border-r-4 border-r-secondary hover:border-r-secondary-dark hover:scale-[1.01]">
                 <CardHeader className="pb-2">
                   <CardTitle className="text-base text-foreground flex items-center justify-between gap-2">

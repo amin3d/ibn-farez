@@ -37,6 +37,7 @@ export default function MemorizationSession({
   const [manualReveal, setManualReveal] = useState(false);
   const [sessionKey, setSessionKey] = useState(0);
   const autoAdvanceTimer = useRef<number | null>(null);
+  const verseIndexRef = useRef(verseIndex);
 
   const totalVerses = poem.verses.length;
   const verse = poem.verses[verseIndex];
@@ -45,6 +46,16 @@ export default function MemorizationSession({
   useEffect(() => {
     getStoredSettings().then(setSettings);
   }, []);
+
+  useEffect(() => {
+    verseIndexRef.current = verseIndex;
+  }, [verseIndex]);
+
+  useEffect(() => {
+    return () => {
+      void updateMemorizationProgress(poem.id, verseIndexRef.current);
+    };
+  }, [poem.id]);
 
   const resetVerseTimer = useCallback(() => {
     setElapsed(0);
